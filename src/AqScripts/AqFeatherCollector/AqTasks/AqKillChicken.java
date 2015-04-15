@@ -35,7 +35,10 @@ class AqKillChicken extends AqTask
     public
     boolean activate()
     {
-        return ctx.game.loggedIn() && ctx.groundItems.select().id(314).isEmpty() && !ctx.players.local().inMotion() && !ctx.players.local().inCombat();
+        return ctx.game.loggedIn()
+               && ctx.groundItems.select().id(314).isEmpty()
+               && !ctx.players.local().inMotion()
+               && !ctx.players.local().inCombat();
     }
 
     /**
