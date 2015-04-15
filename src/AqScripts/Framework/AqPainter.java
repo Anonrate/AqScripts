@@ -1,10 +1,11 @@
 package AqScripts.Framework;
 
+import AqScripts.AqUtil.AqCalc;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 
 import java.awt.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * AqPainter.java
@@ -36,7 +37,7 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	private Font _statusLabelFont = new Font("Candara", 1, 15);
 	private Font _titleFont       = new Font("Candara", 1, 30);
 
-	private long _runTime;
+	private long _runTime = 0l;
 
 	private Polygon _paintPoly = new Polygon(new int[]
 												 {
@@ -54,7 +55,7 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 													 408,
 													 328,
 													 328,
-													 297
+													 294
 												 },
 											 6);
 
@@ -78,42 +79,48 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the { @link Color } of the background paint.
 	 */
-	public Color getBackColor() { return this._backColor; }
+	public
+	Color getBackColor() { return this._backColor; }
 
 	/**
 	 * Gets the { @link Color } of the line for the mouse paint.
 	 *
 	 * @return Returns the { @link Color } of the line for the mouse paint.
 	 */
-	public Color getMouseLineColor() { return this._mouseLineColor; }
+	public
+	Color getMouseLineColor() { return this._mouseLineColor; }
 
 	/**
 	 * Gets the decoration { @link Color } of the line for the mouse paint.
 	 *
 	 * @return Returns the decoration { @link Color } of the line for the mouse paint.
 	 */
-	public Color getMouseLineDecorColor() { return this._mouseLineDecorColor; }
+	public
+	Color getMouseLineDecorColor() { return this._mouseLineDecorColor; }
 
 	/**
 	 * Gets the { @link Color } of the mouse point.
 	 *
 	 * @return Returns the { @link Color } of the mouse point.
 	 */
-	public Color getMousePointColor() { return this._mousePointColor; }
+	public
+	Color getMousePointColor() { return this._mousePointColor; }
 
 	/**
 	 * Gets the normal { @link Font } { @link Color }.
 	 *
 	 * @return Returns the normal { @link Font } { @link Color }.
 	 */
-	public Color getNormalFontColor() { return this._normalFontColor; }
+	public
+	Color getNormalFontColor() { return this._normalFontColor; }
 
 	/**
 	 * Gets the { @link Font } { @link Color } for the status label.
 	 *
 	 * @return Returns the { @link Font } { @link Color } for the status label.
 	 */
-	public Color getStatusLabelFontColor() { return this._statusLabelFontColor; }
+	public
+	Color getStatusLabelFontColor() { return this._statusLabelFontColor; }
 
 	/**
 	 * Gets and Sets the new background { @link Color }.
@@ -122,7 +129,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Color } of the background paint.
 	 */
-	public Color setBackColor(Color color) { return this._backColor = color; }
+	public
+	Color setBackColor(Color color) { return this._backColor = color; }
 
 	/**
 	 * Gets and Sets the new { @link Color } of the line for the mouse paint.
@@ -131,7 +139,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Color } of the line for the mouse paint.
 	 */
-	public Color setMouseLineColor(Color color) { return this._mouseLineColor = color; }
+	public
+	Color setMouseLineColor(Color color) { return this._mouseLineColor = color; }
 
 	/**
 	 * Gets and Sets the new decoration { @link Color } for the line of the mouse paint.
@@ -140,7 +149,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated decorated { @link Color } for the line of the mouse paint.
 	 */
-	public Color setMouseLineDecorColor(Color color) { return this._mouseLineDecorColor = color; }
+	public
+	Color setMouseLineDecorColor(Color color) { return this._mouseLineDecorColor = color; }
 
 	/**
 	 * Gets and Sets the { @link Color } of the mouse point.
@@ -149,7 +159,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Color } of the mouse point.
 	 */
-	public Color setMousePointColor(Color color) { return this._mousePointColor = color; }
+	public
+	Color setMousePointColor(Color color) { return this._mousePointColor = color; }
 
 	/**
 	 * Gets and Sets the new { @link Color } of the normal { @link Font }.
@@ -158,7 +169,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Color } of the normal { @link Font }.
 	 */
-	public Color setNormalFontColor(Color color) { return this._normalFontColor = color; }
+	public
+	Color setNormalFontColor(Color color) { return this._normalFontColor = color; }
 
 	/**
 	 * Gets and Sets the { @link Color } of the { @link Font } for the status label.
@@ -167,7 +179,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Color } for the { @link Font } of the status label.
 	 */
-	public Color setStatusLabelFontColor(Color color) { return this._statusLabelFontColor = color; }
+	public
+	Color setStatusLabelFontColor(Color color) { return this._statusLabelFontColor = color; }
 	
 	
 	/**
@@ -176,7 +189,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 * @param  xValue The value to be calculated of its rate per hour.
 	 * @return        Returns the rate per hour of the given value.
 	 */
-	public double getXPerHour(int xValue)
+	public
+	double getXPerHour(int xValue)
 	{
 		return xValue == 0 ? 0d : 3600000d / this._runTime * xValue;
 	}
@@ -186,35 +200,40 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 * 
 	 * @return Returns the { @link Font } of the normal text.
 	 */
-	public Font getNormalFont() { return this._normalFont; }
+	public
+	Font getNormalFont() { return this._normalFont; }
 
 	/**
 	 * Gets the { @link Font } for the status label text.
 	 * 
 	 * @return Returns the { @link Font } of the status label text.
 	 */
-	public Font getStatusLabelFont() { return this._statusLabelFont; }
+	public
+	Font getStatusLabelFont() { return this._statusLabelFont; }
 
 	/**
 	 * Gets the { @link Font } for the text of the script title.
 	 * 
 	 * @return Returns the { @link Font } for the text of the script title.
 	 */
-	public Font getTitleFont() { return this._titleFont; }
+	public
+	Font getTitleFont() { return this._titleFont; }
 
 	/**
 	 * Gets the current duration of the script in milliseconds.
 	 * 
 	 * @return Returns the current duration of the script in milliseconds.
 	 */
-	public long getRuntime() { return this._runTime; }
+	public
+	long getRuntime() { return this._runTime; }
 
 	/**
 	 * Gets the { @link Polygon } used for the paint.
 	 * 
 	 * @return Returns the { @link Polygon } used for the paint.
 	 */
-	public Polygon getPaintPolygon() { return this._paintPoly; }
+	public
+	Polygon getPaintPolygon() { return this._paintPoly; }
 
 	/**
 	 * Gets and Sets { @link Polygon } for the paint.
@@ -223,21 +242,24 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated { @link Polygon } for the paint.
 	 */
-	public Polygon setPaintPolygon(Polygon polygon) { return this._paintPoly = polygon; }
+	public
+	Polygon setPaintPolygon(Polygon polygon) { return this._paintPoly = polygon; }
 
 	/**
 	 * Gets the current scripts title.
 	 * 
 	 * @return Returns the current scripts title.
 	 */
-	public String getScriptTitle() { return this._ScriptTitle; }
+	public
+	String getScriptTitle() { return this._ScriptTitle; }
 
 	/**
 	 * Gets the current status of the script.
 	 * 
 	 * @return Returns the current status of the script.
 	 */
-	public String getStatus() { return this._status; }
+	public
+	String getStatus() { return this._status; }
 
 	/**
 	 * Gets and Sets the status of the script.
@@ -246,7 +268,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @return Returns the updated scripts status.
 	 */
-	public String setStatus(String status) { return this._status = status; }
+	public
+	String setStatus(String status) { return this._status = status; }
 
 	/**
 	 * Formats the given amount of milliseconds into a more readable time format.
@@ -254,27 +277,24 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 * @param mS The total amount of milliseconds to be converted into a time format.
 	 * @return   Returns the total given amount of milliseconds converted into a time format.
 	 */
-	public String msToTime(long mS)
-	{
-		long hr = TimeUnit.MILLISECONDS.toHours(mS);
-		long min = TimeUnit.MILLISECONDS.toMinutes(mS - TimeUnit.HOURS.toMillis(hr));
-		long sec = TimeUnit.MILLISECONDS.toSeconds(mS - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
-		return String.format("%02d:%02d:%02d", hr, min, sec);
-	}
+	public
+	String msToTime(long mS) { return AqCalc.msToTime(mS); }
 
 	/**
 	 * Creates a chained { @link Graphics2D } to be used for derived Script.
 	 *
 	 * @param g The chained { @link Graphics2D }.
 	 */
-	public abstract void repaint(Graphics2D g);
+	public
+	abstract void repaint(Graphics2D g);
 
 	/**
 	 * Creates a chained { @link Graphics2D } to be used a base paint for the derived Script.
 	 *
 	 * @param g1 The chained { @link Graphics2D }.
 	 */
-	public void paint(Graphics g1)
+	public
+	void paint(Graphics g1)
 	{
 		Graphics2D g = (Graphics2D)g1;
 		Point mouseP = ctx.input.getLocation();

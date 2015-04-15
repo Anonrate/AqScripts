@@ -1,8 +1,7 @@
 package AqScripts.AqFeatherCollector.AqTasks;
 
-import AqScripts.Framework.AqPainter;
 import AqScripts.Framework.AqTask;
-import AqScripts.Framework.IAqPainter;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.rt6.ClientContext;
 
 /**
@@ -13,34 +12,43 @@ import org.powerbot.script.rt6.ClientContext;
  * Created and Coded on 4/14/2015.
  * @author Anonrate
  */
-public class AqPickupFeathers extends AqTask
+public
+class AqPickupFeathers extends AqTask
 {
     /**
-     * Creates a chained { @link ClientContext } and { @link AqPainter }.
+     * Creates a chained { @link ClientContext } and { @link IAqPainter }.
      *
      * @param ctx     The Chained { @link ClientContext }.
-     * @param aqPaint The Chained { @link AqPainter }.
+     * @param aqPaint The Chained { @link IAqPainter }.
      */
-    public AqPickupFeathers(ClientContext ctx, IAqPainter aqPaint)
+    public
+    AqPickupFeathers(ClientContext ctx, IAqPainter aqPaint) { super(ctx, aqPaint); }
+
+    /**
+     * Specifies with the given condition when this task can be executed.
+     *
+     * @return Returns whether or not this task can be executed.
+     */
+    @Override
+    public
+    boolean activate()
     {
-        super(ctx, aqPaint);
+        return ctx.game.loggedIn() && !ctx.groundItems.select().id(314).isEmpty() && !ctx.players.local().inMotion();
     }
 
+    /**
+     * The code to be executed when this task is activated.
+     */
     @Override
-    public boolean activate()
+    public
+    void execute()
     {
-        return ctx.game.loggedIn() && !ctx.groundItems.select().name("Feather").isEmpty() && ctx.players.local().inMotion();
-    }
-
-    @Override
-    public void execute()
-    {
-        if (ctx.groundItems.select().name("Feather").isEmpty())
+        if (ctx.groundItems.select().id(314).isEmpty())
         {
             return;
         }
 
-        if (ctx.groundItems.nearest().peek().interact("Take"))
+        if (ctx.groundItems.nearest().peek().interact("Take", "Feather"))
         {
             ctx.camera.turnTo(ctx.groundItems.nearest().poll());
             this.sleep(452, 800);

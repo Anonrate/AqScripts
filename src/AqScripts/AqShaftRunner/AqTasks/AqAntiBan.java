@@ -1,8 +1,8 @@
 package AqScripts.AqShaftRunner.AqTasks;
 
 import AqScripts.AqShaftRunner.AqConstants;
-import AqScripts.Framework.AqPainter;
 import AqScripts.Framework.AqTask;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.Hud.Window;
@@ -16,23 +16,19 @@ import org.powerbot.script.rt6.Hud.Window;
  * @author Anonrate
  */
 
-public class AqAntiBan extends AqTask
+public
+class AqAntiBan extends AqTask
 {
-	private final AqPainter _AqPaint;
-
-	private GameObject curTree     = null;
+	private GameObject curTree = null;
 
 	/**
-	 * Creates a chained { @link ClientContext } and { @link AqPainter }.
+	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
 	 *
 	 * @param ctx     The Chained { @link ClientContext }.
-	 * @param aqPaint The Chained { @link AqPainter }.
+	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public AqAntiBan(ClientContext ctx, AqPainter aqPaint)
-	{
-		super(ctx, aqPaint);
-		this._AqPaint = aqPaint;
-	}
+	public
+	AqAntiBan(ClientContext ctx, IAqPainter aqPaint) { super(ctx, aqPaint); }
 
 	/**
 	 * Specifies with the given condition when this task can be executed.
@@ -40,29 +36,36 @@ public class AqAntiBan extends AqTask
 	 * @return Returns whether or not this task can be executed.
 	 */
 	@Override
-	public boolean activate()
+	public
+	boolean activate()
 	{
 		return ctx.game.loggedIn() && (ctx.widgets.component(AqConstants.CloseWidgetIdA,
 															 AqConstants.CloseComponentIdA).visible()
-									  || ctx.widgets.component(AqConstants.FletchingWidgetId,
+									   || ctx.widgets.component(AqConstants.FletchingWidgetId,
 															   AqConstants.FletchingComponentId).visible()
-									  || ctx.widgets.component(AqConstants.CloseWidgetIdB,
-															   AqConstants.CloseComponentIdB)
-													.component(AqConstants.CloseSubComponentIdB).visible()
-									  || !ctx.hud.opened(Window.BACKPACK));
+									   || ctx.widgets.component(AqConstants.CloseWidgetIdB,
+																AqConstants.CloseComponentIdB)
+													 .component(AqConstants.CloseSubComponentIdB).visible()
+									   || !ctx.hud.opened(Window.BACKPACK)
+									   || ctx.camera.pitch() <= 80);
 	}
 
 	/**
 	 * The code to be executed when this task is activated.
 	 */
 	@Override
-	public void execute()
+	public
+	void execute()
 	{
-		if (ctx.widgets.component(AqConstants.CloseWidgetIdA, AqConstants.CloseComponentIdA).visible())
+		if (ctx.camera.pitch() <= 80)
+		{
+			ctx.camera.pitch(true);
+		}
+		else if (ctx.widgets.component(AqConstants.CloseWidgetIdA, AqConstants.CloseComponentIdA).visible())
 		{
 			if (ctx.widgets.component(AqConstants.CloseWidgetIdA, AqConstants.CloseComponentIdA).interact("Close"))
 			{
-				this._AqPaint.setStatus("Closing Window...");
+				this.getAqPaint().setStatus("Closing Window...");
 				this.sleep(422, 808);
 			}
 		}
@@ -96,13 +99,13 @@ public class AqAntiBan extends AqTask
 			if (ctx.widgets.component(AqConstants.CloseWidgetIdB, AqConstants.CloseComponentIdB)
 						   .component(AqConstants.CloseSubComponentIdB).interact("Close Window"))
 			{
-				this._AqPaint.setStatus("Closing Window...");
+				this.getAqPaint().setStatus("Closing Window...");
 				this.sleep(455, 789);
 			}
 		}
 		else if (!ctx.hud.opened(Window.BACKPACK))
 		{
-			this._AqPaint.setStatus("Opening Backpack...");
+			this.getAqPaint().setStatus("Opening Backpack...");
 			ctx.hud.open(Window.BACKPACK);
 		}
 	}

@@ -23,18 +23,21 @@ import java.util.List;
 @Script.Manifest(name = "AqShaftRunner",
 				 description = "Runs around, chops trees then fletches them into Arrow Shafts.",
 				 properties = "client = 6")
-public class AqShaftRunner extends PollingScript<ClientContext> implements PaintListener, MessageListener
+public
+class AqShaftRunner extends PollingScript<ClientContext> implements PaintListener, MessageListener
 {
-	private AqChop _aqChop;
+	private AqChop     _aqChop;
 	private AqPaint _aqPaint;
 
 	private boolean _scriptStarted = false;
 
 	private List<AqTask> _aqTaskList = new ArrayList<AqTask>();
 
-	public void start()
+	@Override
+	public
+	void start()
 	{
-		if (!ctx.game.loggedIn()) { this.stop(); }
+		if (! ctx.game.loggedIn()) { this.stop(); }
 
 		this._aqPaint = new AqPaint(this.ctx, "AqShaftRunner");
 
@@ -49,19 +52,22 @@ public class AqShaftRunner extends PollingScript<ClientContext> implements Paint
 	}
 
 	@Override
-	public void poll()
+	public
+	void poll()
 	{
 		for (AqTask aqTask : this._aqTaskList) { if (aqTask.activate()) { aqTask.execute(); } }
 	}
 
 	@Override
-	public void repaint(Graphics g)
+	public
+	void repaint(Graphics g)
 	{
 		if (this._scriptStarted) { this._aqPaint.paint(g); }
 	}
 
 	@Override
-	public void messaged(MessageEvent mE)
+	public
+	void messaged(MessageEvent mE)
 	{
 		if (mE.text().equals("You can't reach that."))
 		{

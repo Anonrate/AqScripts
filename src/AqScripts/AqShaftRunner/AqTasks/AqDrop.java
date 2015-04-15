@@ -1,8 +1,8 @@
 package AqScripts.AqShaftRunner.AqTasks;
 
 import AqScripts.AqShaftRunner.AqConstants;
-import AqScripts.Framework.AqPainter;
 import AqScripts.Framework.AqTask;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud;
 import org.powerbot.script.rt6.Item;
@@ -16,21 +16,17 @@ import org.powerbot.script.rt6.Item;
  * @author Anonrate
  */
 
-public class AqDrop extends AqTask
+public
+class AqDrop extends AqTask
 {
-	private final AqPainter _AqPaint;
-
 	/**
-	 * Creates a chained { @link ClientContext } and { @link AqPainter }.
+	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
 	 *
 	 * @param ctx     The Chained { @link ClientContext }.
-	 * @param aqPaint The Chained { @link AqPainter }.
+	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public AqDrop(ClientContext ctx, AqPainter aqPaint)
-	{
-		super(ctx, aqPaint);
-		this._AqPaint = aqPaint;
-	}
+	public
+	AqDrop(ClientContext ctx, IAqPainter aqPaint) { super(ctx, aqPaint); }
 
 	/**
 	 * Specifies with the given condition when this task can be executed.
@@ -38,10 +34,10 @@ public class AqDrop extends AqTask
 	 * @return Returns whether or not this task can be executed.
 	 */
 	@Override
-	public boolean activate()
+	public
+	boolean activate()
 	{
-		return ctx.game.loggedIn()
-			   && ctx.backpack.select().id(AqConstants.OakLogId).count() > 0
+		return ctx.game.loggedIn() && ctx.backpack.select().id(AqConstants.OakLogId).count() > 0
 			   && !ctx.widgets.component(AqConstants.FletchingWidgetId, AqConstants.FletchingComponentId).visible()
 			   && !ctx.widgets.component(AqConstants.CloseWidgetIdA, AqConstants.CloseComponentIdA).visible()
 			   && !ctx.widgets.component(AqConstants.CloseWidgetIdB, AqConstants.CloseComponentIdB)
@@ -58,7 +54,7 @@ public class AqDrop extends AqTask
 	{
 		for (Item item : ctx.backpack.select().id(AqConstants.OakLogId).shuffle())
 		{
-			this._AqPaint.setStatus("Dropping Oak Logs...");
+			this.getAqPaint().setStatus("Dropping Oak Logs...");
 			item.interact("Drop");
 		}
 	}

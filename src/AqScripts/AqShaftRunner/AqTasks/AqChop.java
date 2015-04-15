@@ -1,8 +1,8 @@
 package AqScripts.AqShaftRunner.AqTasks;
 
 import AqScripts.AqShaftRunner.AqConstants;
-import AqScripts.Framework.AqPainter;
 import AqScripts.Framework.AqTask;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.Filter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
@@ -19,23 +19,18 @@ import org.powerbot.script.rt6.Hud.Window;
 
 public class AqChop extends AqTask
 {
-	private final AqPainter _AqPaint;
-
 	private boolean _reachable = true;
 
-	private GameObject _curTree     = null;
+	private GameObject _curTree = null;
 
 	/**
-	 * Creates a chained { @link ClientContext } and { @link AqPainter }.
+	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
 	 *
 	 * @param ctx     The Chained { @link ClientContext }.
-	 * @param aqPaint The Chained { @link AqPainter }.
+	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public AqChop(ClientContext ctx, AqPainter aqPaint)
-	{
-		super(ctx, aqPaint);
-		this._AqPaint = aqPaint;
-	}
+	public
+	AqChop(ClientContext ctx, IAqPainter aqPaint) { super(ctx, aqPaint); }
 
 	/**
 	 * Gets and Sets if the given tree is reachable.
@@ -83,12 +78,14 @@ public class AqChop extends AqTask
 
 		if (!this._reachable)
 		{
-			this._AqPaint.setStatus("Current Tree Un-Reachable!");
+			this.getAqPaint().setStatus("Current Tree Un-Reachable!");
 			if (ctx.objects.select().select(new Filter<GameObject>()
 			{
 				@Override
 				public boolean accept(GameObject tree) { return !tree.equals(_curTree); }
-			}).id(AqConstants.TreeIds).isEmpty())
+			})
+						   .id(AqConstants.TreeIds)
+						   .isEmpty())
 			{
 				return;
 			}
@@ -105,17 +102,17 @@ public class AqChop extends AqTask
 			{
 				if (ctx.players.local().inMotion())
 				{
-					this._AqPaint.setStatus("Walking to tree...");
+					this.getAqPaint().setStatus("Walking to tree...");
 					return;
 				}
 
-				this._AqPaint.setStatus("Chopping tree...");
+				this.getAqPaint().setStatus("Chopping tree...");
 				return;
 			}
 
 			if (!this._curTree.inViewport())
 			{
-				this._AqPaint.setStatus("Stepping Towards Tree...");
+				this.getAqPaint().setStatus("Stepping Towards Tree...");
 				ctx.movement.step(this._curTree);
 				ctx.camera.turnTo(this._curTree);
 				this.sleep(68, 120);
@@ -127,7 +124,7 @@ public class AqChop extends AqTask
 
 		if (this._curTree.interact("Chop"))
 		{
-			this._AqPaint.setStatus("Interacting with tree...");
+			this.getAqPaint().setStatus("Interacting with tree...");
 			this.sleep(903, 1228);
 			ctx.camera.turnTo(this._curTree);
 			return;

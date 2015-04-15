@@ -9,7 +9,8 @@ package AqScripts.AqShaftRunner;
  * @author Anonrate
  */
 
-public final class AqConstants
+public
+final class AqConstants
 {
 	public static final int OakLogId = 1521;
 

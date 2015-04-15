@@ -15,7 +15,8 @@ import java.text.DecimalFormat;
  * Created and Coded on 4/14/2015.
  * @author Anonrate
  */
-public class AqPaint extends AqPainter
+public
+class AqPaint extends AqPainter
 {
 	private final int _ShaftPrice;
 
@@ -30,7 +31,8 @@ public class AqPaint extends AqPainter
 	 * @param ctx         The chained { @link ClientContext }.
 	 * @param scriptTitle The title of the current Script.
 	 */
-	public AqPaint(ClientContext ctx, String scriptTitle)
+	public
+	AqPaint(ClientContext ctx, String scriptTitle)
 	{
 		super(ctx, scriptTitle);
 
@@ -45,14 +47,16 @@ public class AqPaint extends AqPainter
 	 *
 	 * @return Returns the current amount of logs that have been chopped.
 	 */
-	public int getLogsCount() { return this._logsCount; }
+	public
+	int getLogsCount() { return this._logsCount; }
 
 	/**
 	 * Gets the amount of shafts that have been fletched.
 	 *
 	 * @return Returns the amount of shafts that have  been fletched.
 	 */
-	public int getShaftsCount() { return this._shaftsCount; }
+	public
+	int getShaftsCount() { return this._shaftsCount; }
 
 	/**
 	 * Gets and Sets the amount of logs that have been chopped.
@@ -61,7 +65,8 @@ public class AqPaint extends AqPainter
 	 *
 	 * @return Returns updated amount of logs that now have been chopped.
 	 */
-	public int setLogsCount(int amount) { return this._logsCount = amount; }
+	public
+	int setLogsCount(int amount) { return this._logsCount = amount; }
 
 	/**
 	 * Gets and Sets the amount of shafts that have been fletched.
@@ -70,7 +75,8 @@ public class AqPaint extends AqPainter
 	 *
 	 * @return Returns the updated amount of shafts that now have been fletched.
 	 */
-	public int setShaftsCount(int amount) { return this._shaftsCount = amount; }
+	public
+	int setShaftsCount(int amount) { return this._shaftsCount = amount; }
 
 	/**
 	 * Creates a chained { @link Graphics2D } to be used for derived Script.
@@ -78,7 +84,8 @@ public class AqPaint extends AqPainter
 	 * @param g The chained { @link Graphics2D }.
 	 */
 	@Override
-	public void repaint(Graphics2D g)
+	public
+	void repaint(Graphics2D g)
 	{
 		double logsPerHour   = this.getXPerHour(this._logsCount);
 		double shaftsPerHour = this.getXPerHour(this._shaftsCount);

@@ -1,8 +1,8 @@
 package AqScripts.AqShaftRunner.AqTasks;
 
 import AqScripts.AqShaftRunner.AqConstants;
-import AqScripts.Framework.AqPainter;
 import AqScripts.Framework.AqTask;
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud;
 
@@ -17,8 +17,6 @@ import org.powerbot.script.rt6.Hud;
 
 public class AqFletchShafts extends AqTask
 {
-	private final AqPainter _AqPaint;
-
 	private final int _ArrowShaftWidgetId       = 1371;
 	private final int _ArrowShaftSubComponentId = 0;
 	private final int _ArrowShaftComponentId    = 44;
@@ -27,16 +25,13 @@ public class AqFletchShafts extends AqTask
 	private final int _ToolComponentId = 34;
 
 	/**
-	 * Creates a chained { @link ClientContext } and { @link AqPainter }.
+	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
 	 *
 	 * @param ctx     The Chained { @link ClientContext }.
-	 * @param aqPaint The Chained { @link AqPainter }.
+	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public AqFletchShafts(ClientContext ctx, AqPainter aqPaint)
-	{
-		super(ctx, aqPaint);
-		this._AqPaint = aqPaint;
-	}
+	public
+	AqFletchShafts(ClientContext ctx, IAqPainter aqPaint) { super(ctx, aqPaint); }
 
 	/**
 	 * Specifies with the given condition when this task can be executed.
@@ -44,7 +39,8 @@ public class AqFletchShafts extends AqTask
 	 * @return Returns whether or not this task can be executed.
 	 */
 	@Override
-	public boolean activate()
+	public
+	boolean activate()
 	{
 		return ctx.game.loggedIn()
 			   && (ctx.backpack.select().id(AqConstants.OakLogId).count() == 0)
@@ -76,7 +72,7 @@ public class AqFletchShafts extends AqTask
 		{
 			if (ctx.widgets.component(this._ToolWidgetId, this._ToolComponentId).interact("Select"))
 			{
-				this._AqPaint.setStatus("Selecting Knife...");
+				this.getAqPaint().setStatus("Selecting Knife...");
 				this.sleep(758, 1001);
 			}
 
@@ -92,7 +88,7 @@ public class AqFletchShafts extends AqTask
 							   .component(this._ArrowShaftSubComponentId)
 							   .interact("Select"))
 				{
-					this._AqPaint.setStatus("Selecting Arrow Shafts...");
+					this.getAqPaint().setStatus("Selecting Arrow Shafts...");
 					this.sleep(744, 1022);
 				}
 
@@ -109,7 +105,7 @@ public class AqFletchShafts extends AqTask
 															 fletchingAmountComponentId).text()
 									 + " Arrow shaft"))
 			{
-				this._AqPaint.setStatus("Selecting Fletch Shafts...");
+				this.getAqPaint().setStatus("Selecting Fletch Shafts...");
 				this.sleep(789, 999);
 			}
 
@@ -123,7 +119,7 @@ public class AqFletchShafts extends AqTask
 		{
 			if (ctx.backpack.shuffle().poll().interact("Craft"))
 			{
-				this._AqPaint.setStatus("Interacting with log...");
+				this.getAqPaint().setStatus("Interacting with log...");
 				this.sleep(761, 991);
 			}
 		}

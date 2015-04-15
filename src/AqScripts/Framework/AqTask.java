@@ -1,5 +1,6 @@
 package AqScripts.Framework;
 
+import AqScripts.Framework.Interfaces.IAqPainter;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
@@ -12,28 +13,31 @@ import org.powerbot.script.rt6.ClientContext;
  * Created and Coded on 4/14/2015.
  * @author Anonrate
  */
-public abstract class AqTask extends ClientAccessor
+public
+abstract class AqTask extends ClientAccessor
 {
 	private final IAqPainter _AqPaint;
 
 	/**
-	 * Creates a chained { @link ClientContext } and { @link AqPainter }.
+	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
 	 *
 	 * @param ctx     The Chained { @link ClientContext }.
-	 * @param aqPaint The Chained { @link AqPainter }.
+	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public AqTask(ClientContext ctx, IAqPainter aqPaint)
+	public
+	AqTask(ClientContext ctx, IAqPainter aqPaint)
 	{
 		super(ctx);
 		this._AqPaint = aqPaint;
 	}
 
 	/**
-	 * Gets the current { @link AqPainter } used to paint this task.
+	 * Gets the current { @link IAqPainter } used to paint this task.
 	 *
-	 * @return Returns the current { @link AqPainter } used to paint this task.
+	 * @return Returns the current { @link IAqPainter } used to paint this task.
 	 */
-	public IAqPainter getAqPaint() { return this._AqPaint; }
+	public
+	IAqPainter getAqPaint() { return this._AqPaint; }
 
 	/**
 	 * Halts the current thread for a { @link Random } amount of milliseconds within the given range.
@@ -41,7 +45,8 @@ public abstract class AqTask extends ClientAccessor
 	 * @param minMs The minimum amount of time to sleep in milliseconds.
 	 * @param maxMs The maximum amount of time to sleep in milliseconds.
 	 */
-	public void sleep(int minMs, int maxMs)
+	public
+	void sleep(int minMs, int maxMs)
 	{
 		try { Thread.sleep(Random.nextInt(minMs, maxMs)); }
 		catch (InterruptedException e) { e.printStackTrace(); }
@@ -52,10 +57,12 @@ public abstract class AqTask extends ClientAccessor
 	 *
 	 * @return Returns whether or not this task can be executed.
 	 */
-	public abstract boolean activate();
+	public
+	abstract boolean activate();
 
 	/**
 	 * The code to be executed when this task is activated.
 	 */
-	public abstract void execute();
+	public
+	abstract void execute();
 }
