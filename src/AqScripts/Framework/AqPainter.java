@@ -17,6 +17,11 @@ import java.awt.*;
  */
 public abstract class AqPainter extends ClientAccessor implements IAqPainter
 {
+	private final int _StartExp;
+	private final int _StartLevel;
+
+	private final int _SkillIndex;
+
 	private final long _StartTime;
 
 	private final String _ScriptTitle;
@@ -36,6 +41,12 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	private Font _normalFont      = new Font("Candara", 0, 15);
 	private Font _statusLabelFont = new Font("Candara", 1, 15);
 	private Font _titleFont       = new Font("Candara", 1, 30);
+
+	private int _runTimeX = 68;
+	private int _runTimeY = 345;
+
+	private int _expGained   = 0;
+	private int _levelGained = 0;
 
 	private long _runTime = 0l;
 
@@ -67,11 +78,15 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 * @param ctx         The chained { @link ClientContext }.
 	 * @param scriptTitle The title of the current Script.
 	 */
-	public AqPainter(ClientContext ctx, String scriptTitle)
+	public AqPainter(ClientContext ctx, int skillIndex, String scriptTitle)
 	{
 		super(ctx);
+		this._SkillIndex = skillIndex;
 		this._ScriptTitle = scriptTitle;
+		this._StartExp = ctx.skills.experience(skillIndex);
+		this._StartLevel = ctx.skills.level(skillIndex);
 		this._StartTime = System.currentTimeMillis();
+
 	}
 
 	/**
@@ -220,6 +235,130 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	Font getTitleFont() { return this._titleFont; }
 
 	/**
+	 * Gets the { @link Player }s current experience in the corresponding skill using the provided skill index.
+	 *
+	 * @return Returns the { @link Player }s current experience in corresponding skill using the provided skill index.
+	 */
+	public
+	int getCurExp() { return ctx.skills.experience(this._SkillIndex); }
+
+	/**
+	 * Gets the { @link Player }s current level in the corresponding skill using the provided skill index.
+	 *
+	 * @return Returns the { @link Player }s current level in corresponding skill using the provided skill index.
+	 */
+	public
+	int getCurLevel() { return ctx.skills.level(this._SkillIndex); }
+
+	/**
+	 * Gets the amount of experience the { @link Player } has gained in the corresponding skill using the provided
+	 * skill index.
+	 *
+	 * @return Returns the amount of experience the { @link Player } has gained in the corresponding skill using the
+	 * provided skill index.
+	 */
+	public
+	int getExpGained() { return ctx.skills.experience(this._SkillIndex) - this._StartExp; }
+
+	/**
+	 * Gets the amount of experience the { @link Player } needs to advance to the next level in the corresponding skill
+	 * using the provided skill index.
+	 *
+	 * @return Returns the amount of experience the { @link Player } needs to advance in the corresponding skill using
+	 * the provided skill index.
+	 */
+	public
+	int getExpTNL() { return ctx.skills.experienceAt(ctx.skills.level(this._SkillIndex) + 1) -
+							 ctx.skills.experience(this._SkillIndex); }
+
+	/**
+	 * Gets the amount of levels the { @link Player } has gained in the corresponding skill using the provided
+	 * skill index.
+	 *
+	 * @return Returns the amount of levels the { @link Player } has gained in the corresponding skill using the
+	 * provided skill index.
+	 */
+	public
+	int getLevelsGained() { return ctx.skills.level(this._SkillIndex) - this._StartLevel; }
+
+	/**
+	 * Gets the index of which skill is to be calculated.
+	 *
+	 * @return Returns the index of which skill is being used.
+	 */
+	public
+	int getSkillIndex() { return this._SkillIndex; }
+
+	/**
+	 * Gets the { @link Player }s starting experience in the corresponding skill using the provided skill index.
+	 *
+	 * @return Returns the { @link Player }s starting experience in corresponding skill using the provided skill index.
+	 */
+	public
+	int getStartExp() { return this._StartExp; }
+
+	/**
+	 * Gets the { @link Player }s starting level in the corresponding skill using the provided skill index.
+	 *
+	 * @return Returns the { @link Player }s starting level in corresponding skill using the provided skill index.
+	 */
+	public
+	int getStartLevel() { return this._StartLevel; }
+
+	/**
+	 * Gets the x { @link Point } for the runtime text.
+	 *
+	 * @return Returns the x { @link Point } of the runtime text.
+	 */
+	public
+	int getRunTimeX() { return this._runTimeX; }
+
+	/**
+	 * Gets the y { @link Point } for the runtime text.
+	 *
+	 * @return Returns the y { @link Point } of the runtime text.
+	 */
+	public
+	int getRunTimeY() { return this._runTimeY; }
+
+	/**
+	 * Gets the percentage to the { @link Player }s next level in the corresponding skill using the provided skill index.
+	 *
+	 * @return Returns the percentage to the { @link Player }s next level in the corresponding skill using the provided
+	 * skill index.
+	 */
+	public
+	double getPercentToNextLevel()
+	{
+		int curLevelStartExp = ctx.skills.experienceAt(ctx.skills.level(this._SkillIndex));
+		int nextLevelExp = ctx.skills.experienceAt(this._SkillIndex + 1);
+		int expDifference = nextLevelExp - curLevelStartExp;
+		int curExpAtLevel = ctx.skills.experience(this._SkillIndex) - curLevelStartExp;
+
+		return ((double)curExpAtLevel / (double)expDifference) * 100D;
+	}
+
+	/**
+	 * Gets and Sets the x { @link Point } for the runtime text
+	 *
+	 * @param x The value to change the x { @link Point } of the runtime text too.
+	 *
+	 * @return Returns the updated x { @link Point } for the runtime text.
+	 */
+	public
+	int setRunTimeX(int x) { return this._runTimeX = x; }
+
+	/**
+	 * Gets and Sets the y { @link Point } for the runtime text
+	 *
+	 * @param y The value to change the y { @link Point } of the runtime text too.
+	 *
+	 * @return Returns the updated y { @link Point } for the runtime text.
+	 */
+	public
+	int setRunTimeY(int y) { return this._runTimeY = y; }
+
+	/**
 	 * Gets the current duration of the script in milliseconds.
 	 * 
 	 * @return Returns the current duration of the script in milliseconds.
@@ -254,6 +393,22 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	String getScriptTitle() { return this._ScriptTitle; }
 
 	/**
+	 * Gets the normal { @link Stroke }.
+	 *
+	 * @return Returns the normal { @link Stroke }.
+	 */
+	public
+	Stroke getNormalStroke() { return this._NormalStroke; }
+
+	/**
+	 * Gets the { @link Stroke } used for decoration.
+	 *
+	 * @return Returns the { @link Stroke } used for decoration.
+	 */
+	public
+	Stroke getDecorStroke() { return this._DecorStroke; }
+
+	/**
 	 * Gets the current status of the script.
 	 * 
 	 * @return Returns the current status of the script.
@@ -285,8 +440,8 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 	 *
 	 * @param g The chained { @link Graphics2D }.
 	 */
-	public
-	abstract void repaint(Graphics2D g);
+	public abstract
+	void repaint(Graphics2D g);
 
 	/**
 	 * Creates a chained { @link Graphics2D } to be used a base paint for the derived Script.
@@ -326,7 +481,7 @@ public abstract class AqPainter extends ClientAccessor implements IAqPainter
 
 		g.setFont(this._normalFont);
 		g.setColor(this._normalFontColor);
-		g.drawString(this.msToTime(this._runTime), 68, 345);
+		g.drawString(this.msToTime(this._runTime), this._runTimeX, this._runTimeY);
 		this.repaint(g);
 
 		g.setColor(this._normalFontColor);

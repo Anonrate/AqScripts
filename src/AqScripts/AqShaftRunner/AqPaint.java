@@ -32,9 +32,9 @@ class AqPaint extends AqPainter
 	 * @param scriptTitle The title of the current Script.
 	 */
 	public
-	AqPaint(ClientContext ctx, String scriptTitle)
+	AqPaint(ClientContext ctx, int skillIndex, String scriptTitle)
 	{
-		super(ctx, scriptTitle);
+		super(ctx, skillIndex, scriptTitle);
 
 		// Moved this variable to local scope; if issues arise move back to global scope.
 		int _ShaftId = 52;

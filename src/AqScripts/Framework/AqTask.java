@@ -1,6 +1,8 @@
 package AqScripts.Framework;
 
 import AqScripts.Framework.Interfaces.IAqPainter;
+import AqScripts.api.context.AqAccessor;
+import AqScripts.api.context.AqContext;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
@@ -14,9 +16,16 @@ import org.powerbot.script.rt6.ClientContext;
  * @author Anonrate
  */
 public
-abstract class AqTask extends ClientAccessor
+abstract class AqTask extends AqAccessor
 {
 	private final IAqPainter _AqPaint;
+
+	public
+	AqTask(AqContext aqx, IAqPainter aqPaint)
+	{
+		super(aqx);
+		this._AqPaint = aqPaint;
+	}
 
 	/**
 	 * Creates a chained { @link ClientContext } and { @link IAqPainter }.
@@ -24,12 +33,7 @@ abstract class AqTask extends ClientAccessor
 	 * @param ctx     The Chained { @link ClientContext }.
 	 * @param aqPaint The Chained { @link IAqPainter }.
 	 */
-	public
-	AqTask(ClientContext ctx, IAqPainter aqPaint)
-	{
-		super(ctx);
-		this._AqPaint = aqPaint;
-	}
+
 
 	/**
 	 * Gets the current { @link IAqPainter } used to paint this task.

@@ -6,6 +6,7 @@ import AqScripts.AqShaftRunner.AqTasks.AqFletchShafts;
 import AqScripts.Framework.AqTask;
 import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Constants;
 
 import java.awt.*;
 import java.util.*;
@@ -39,7 +40,7 @@ class AqShaftRunner extends PollingScript<ClientContext> implements PaintListene
 	{
 		if (! ctx.game.loggedIn()) { this.stop(); }
 
-		this._aqPaint = new AqPaint(this.ctx, "AqShaftRunner");
+		this._aqPaint = new AqPaint(this.ctx, Constants.SKILLS_FLETCHING, "AqShaftRunner");
 
 		// Needs to be declared first as an issue may arise.
 		this._aqTaskList.add(this._aqChop = new AqChop(this.ctx, this._aqPaint));
